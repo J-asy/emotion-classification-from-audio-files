@@ -73,11 +73,14 @@ class TrainModel:
         plt.legend(['train', 'test'], loc='upper left')
         plt.savefig('accuracy.png')
 
-        predictions = model.predict_classes(x_testcnn)
-        new_y_test = y_test.astype(int)
-        matrix = confusion_matrix(new_y_test, predictions)
+        # predictions = model.predict_classes(x_testcnn)
+        predict_x=model.predict(X_test) 
+        classes_x=np.argmax(predict_x,axis=1)
 
-        print(classification_report(new_y_test, predictions))
+        new_y_test = y_test.astype(int)
+        matrix = confusion_matrix(new_y_test, classes_x)
+
+        print(classification_report(new_y_test, classes_x))
         print(matrix)
 
         model_name = 'Emotion_Voice_Detection_Model.h5'
@@ -92,6 +95,6 @@ class TrainModel:
 
 if __name__ == '__main__':
     print('Training started')
-    X = joblib.load(SAVE_DIR_PATH + '\\X.joblib')
-    y = joblib.load(SAVE_DIR_PATH + '\\y.joblib')
+    X = joblib.load(SAVE_DIR_PATH + '/X.joblib')
+    y = joblib.load(SAVE_DIR_PATH + '/y.joblib')
     NEURAL_NET = TrainModel.train_neural_network(X=X, y=y)
